@@ -1,0 +1,27 @@
+2016/01/01 * Paycheck
+    Income:Paycheck                           -$1000
+    Expenses:Taxes:State                         $20
+    Expenses:Taxes:Federal                       $20
+    Assets:Bank:Checking
+2016/01/01 * Cash Transfer
+    Assets:Bank:Savings                         $200
+    Assets:Bank:Checking
+2016/01/02 * Loan Payment
+    Liabilities:Loans:Student Loans             $150
+    Assets:Bank:Checking
+2016/01/03 * Thinking Cup
+    Expenses:Coffee Shops                      $3.50
+    Assets:Bank:Checking
+2016/01/04 * Roth IRA Contribution
+    Assets:Retirement:Roth IRA:2015             $200
+    Assets:Bank:Checking
+2016/01/05 * Roth IRA Order
+    Assets:Retirement:Roth IRA:VCSAX              10 VCSAX
+    Assets:Retirement:Roth IRA:2015            -$100
+2016/02/01 * Thinking Cup
+    Expenses:Coffee Shops                      $3.45
+    Assets:Bank:Checking
+2016/02/05 * Roth IRA Order
+    ; Conversion is automatic!!
+    Assets:Retirement:Roth IRA:VCSAX               5 VCSAX
+    Assets:Retirement:Roth IRA:2015            -$100

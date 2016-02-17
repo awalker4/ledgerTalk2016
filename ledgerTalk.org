@@ -1,0 +1,181 @@
+#+TITLE: Conquering your Finances with Emacs and Ledger
+#+AUTHOR: Austin Walker
+#+EMAIL:     
+#+REVEAL_HLEVEL: 1
+#+REVEAL_THEME: black
+#+REVEAL_TRANS: fade
+#+REVEAL_MARGIN: 0.1
+#+REVEAL_MAX_SCALE: 2.5
+#+REVEAL_MIN_SCALE: 0.5
+#+REVEAL_PLUGINS: (markdown notes)
+
+#+OPTIONS: toc:0 todo:nil
+#+OPTIONS: reveal_center:t reveal_progress:nil reveal_history:nil reveal_control:t
+#+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t num:nil
+#+OPTIONS: reveal_width:1200 reveal_height:800
+
+* About Me
+  
+  - Software Engineer at EMC
+  - Ledger user for 1 year
+  - [[mailto:awalk89@gmail.com][awalk89@gmail.com]]
+  - [[https://github.com/awalker4][github.com/awalker4]]
+  
+  #+BEGIN_NOTES
+  Slides are in org, will be on github
+  #+END_NOTES
+  
+* What is ledger?
+  
+  - [[http://ledger-cli.org][ledger-cli.org]]
+  - Double entry accounting
+  - Linux, Mac, Windows
+  - Command line
+  - Written by John Wiegley (2003)
+      
+    #+BEGIN_NOTES
+    - Free under BSD
+    #+END_NOTES
+* Double Entry?
+
+  #+ATTR_REVEAL: :frag (appear)
+  - All money has a source and destination account
+    #+ATTR_REVEAL: :frag (appear)
+    | Payee        | Amount |
+    | Paycheck     | + $100 |
+    | Bought stuff | - $20  |
+    | Total        | $80    |
+    #+BEGIN_NOTES
+    - If you're using a double entry system...
+    #+END_NOTES
+** Try This
+    | Assets:Checking Account | $100  |
+    | Income:Paycheck         | -$100 |
+    | Assets:Checking Account | -$20  |
+    | Expenses:Stuff          | $20   |
+    | Total                   | $0    |
+    
+    #+BEGIN_NOTES
+    - Everything balances
+    - Notice that I prepended...
+    #+END_NOTES
+* The Five Accounts
+
+  - Assets
+  - Expenses
+  - Income
+  - Liabilities
+  - Equity
+     
+    #+BEGIN_NOTES
+    - what you have
+    - what you spend
+    - what you earn
+    - what you owe
+    - what you own (assets - liabilities)
+
+    Universal rules for these.
+    - ie net worth = assets - liabilities
+    - cash flow = income - expenses
+    #+END_NOTES
+** Accounting Equations
+
+   - Net worth = Assets - Liabilities
+   - Net income = Income - Expenses
+* Ledger Transactions
+  
+  #+BEGIN_SRC ledger
+    2016/01/01 * Cash Transfer
+        Assets:Bank:Checking                        $200
+        Assets:Bank:Savings                        -$200
+    2016/01/02 * Loan Payment
+        Liabilities:Loans:Student Loans             $150
+        Assets:Bank:Checking                       -$150
+    2016/01/03 * Thinking Cup
+        Expenses:Coffee Shops                      $3.50
+        Assets:Bank:Checking
+  #+END_SRC
+
+  #+BEGIN_NOTES
+  - All money comes from somewhere, goes somewhere
+    - Between assets
+    - Pay off a liability
+    - Money towards an expense
+      - Often a category in other applications
+    - Notice the missing negative amount
+  #+END_NOTES
+** Your Accounts
+
+   #+BEGIN_SRC sh
+     ledger -f ledger.dat balance
+   #+END_SRC
+   
+   #+BEGIN_SRC fundamental
+                 $-150.00  Assets:Bank
+                   $50.00    Checking
+                 $-200.00    Savings
+                    $3.50  Expenses:Coffee Shops
+                  $146.50  Liabilities
+                   $-3.50    Credit Card
+                  $150.00    Loans:Student Loans
+     --------------------
+                        0
+
+   #+END_SRC
+** Your Bank Statement
+   #+BEGIN_SRC sh
+     ledger -f ledger.dat register checking
+   #+END_SRC
+
+   #+BEGIN_SRC fundamental
+     16-Jan-01 Cash Transfer       Assets:Bank:Checking         $200.00      $200.00
+     16-Jan-02 Loan Payment        Assets:Bank:Checking        $-150.00       $50.00
+     16-Jan-03 Thinking Cup        Assets:Bank:Checking          $-3.50       $46.50
+   #+END_SRC
+* What's the Point?
+  
+    #+ATTR_REVEAL: :frag (appear)
+  - It's your data
+  - Expressive reporting capability
+        
+      #+BEGIN_NOTES
+        - Going to get fedloan history, they don't store more than 12
+        - Git!
+      #+END_NOTES
+** Time Periods
+   #+BEGIN_SRC sh
+     ledger bal "Liabilities:Credit Card" --begin "last month"
+     ledger reg "Expenses:Shopping" --period "last october"
+     ledger reg eating -M
+   #+END_SRC
+
+   #+BEGIN_NOTES
+    - How much do I spend on eating out monthly, weekly, yearly?
+    - How much have I contributed to my IRA this tax year?
+    - How much interest did my accounts make last year?
+   #+END_NOTES
+** Transaction Properties
+   #+BEGIN_SRC sh
+     ledger reg "Assets:Roth IRA:2015" and @Contribution
+     ledger reg "Expenses" and %Gift
+     ledger bal Assets Liabilities --cleared
+   #+END_SRC
+   
+* ledger-mode
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package ledger-mode
+      :ensure t
+      :init
+      (setq ledger-clear-whole-transactions 1)
+
+      :config
+      (add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
+      :mode "\\.dat\\'")
+  #+END_SRC
+  
+  #+BEGIN_NOTES
+  - use-package also from John Wiegley
+  - Clear whole transaction
+  #+END_NOTES
+* Thank You
