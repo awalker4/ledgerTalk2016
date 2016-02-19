@@ -1,3 +1,8 @@
+2016/01/01 * Initial Post
+    ; Do something like this to start off your accounts
+    Assets:Bank:Checking                        $200
+    Assets:Bank:Savings                         $500
+    Equity:Starting Balances
 2016/01/01 * Paycheck
     Income:Paycheck                           -$1000
     Expenses:Taxes:State                         $20
